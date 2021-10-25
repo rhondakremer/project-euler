@@ -1,0 +1,49 @@
+const largest_product_in_a_series = (num) => {
+    const stringNum = num.toString()
+    let pointer1 = 0
+    let pointer2 = 12
+    let maxSum = get_sum_of_digits(stringNum.substring(pointer1, pointer2+1))
+    let currentSum = maxSum
+    pointer1++
+    pointer2++
+    let previousHadZero = false
+    while (pointer2 < stringNum.length - 1) {
+        const currentNums = stringNum.substring(pointer1, pointer2+1)
+        if (!has_zero(currentNums)) {
+            if (!previousHadZero) {
+                currentSum /= stringNum[pointer1-1]
+                currentSum *= stringNum[pointer2]
+            }
+            else {
+                currentSum = get_sum_of_digits(currentNums)
+            }
+            if (currentSum > maxSum) {
+                maxSum = currentSum
+            }
+        }
+        else {
+            previousHadZero = true
+        }
+        pointer1++
+        pointer2++
+    }
+    return maxSum
+}
+
+const get_sum_of_digits = (num) => {
+    let sum = 1
+    let counter = 0
+    while (counter < num.length) {
+        sum *= num[counter]
+        counter++
+    }
+    return sum
+}
+
+const has_zero = (string) => {
+    return string.includes('0')
+}
+
+const largeNum = BigInt("731671765313306249192251196744265747423553491949349698352031277450632623957831801698480186947885184385861560789112949495459501737958331952853208805511125406987471585238630507156932909632952274430435576689664895044524452316173185640309871112172238311362229893423380308135336276614282806444486645238749303589072962904915604407723907138105158593079608667017242712188399879790879274921901699720888093776657273330010533678812202354218097512545405947522435258490771167055601360483958644670632441572215539753697817977846174064955149290862569321978468622482839722413756570560574902614079729686524145351004748216637048440319989000889524345065854122758866688116427171479924442928230863465674813919123162824586178664583591245665294765456828489128831426076900422421902267105562632111110937054421750694165896040807198403850962455444362981230987879927244284909188845801561660979191338754992005240636899125607176060588611646710940507754100225698315520005593572972571636269561882670428252483600823257530420752963450")
+
+console.log(largest_product_in_a_series(largeNum))
